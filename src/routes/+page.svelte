@@ -1,12 +1,40 @@
 <script>
     import { onMount } from 'svelte';
-    import { navigate } from 'svelte-routing';
 
+    let foodImage;
     let modalVisible = false;
     let modalType = '';
     let username = '';
     let password = '';
     let user_id = null; // Initialize user_id variable
+
+    const currentDate = new Date();
+    const dayOfWeek = currentDate.getDay();
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const currentDay = daysOfWeek[dayOfWeek];
+
+    // Map food items to days of the week
+    const foodItems = {
+        Tuesday: 'burger',
+        Wednesday: 'pizza',
+        Thursday: 'pasta',
+        Friday: 'briyani',
+    };
+
+    async function fetchFoodImage(food) {
+        try {
+            const response = await fetch(`https://foodish-api.com/api/images/${food}`);
+            const data = await response.json();
+            foodImage = data.image;
+        } catch (error) {
+            console.error('Error fetching food image:', error);
+        }
+    }
+
+    onMount(async () => {
+        const foodOfTheDay = foodItems[currentDay];
+        await fetchFoodImage(foodOfTheDay);
+    });
 
     function openModal(type) {
         modalVisible = true;
@@ -91,6 +119,13 @@
         <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
             <img src="src/assets/file (2).png" alt="Shopping Cart" style="width: 100px; height: 100px;">
         </button>
+
+        <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+            <a href="src/assets/menu.jpeg" download>
+            <img src="src/assets/menu.jpeg" alt="Shopping Cart" style="width: 100px; height: 100px;">
+            </a>
+        </button>
+
     </header>
 
     <!-- Modal --><!-- Login Modal -->
@@ -171,8 +206,10 @@
             </div>
         </div>
     {/if}
+    <div class="bg-white rounded-lg overflow-hidden shadow-xl mb-8">
+        <img src={foodImage} alt="Food Image" class="w-48 h-48" >
+    </div>
 </div>
-
 <style>
     /* Additional styling can be added here */
 </style>
