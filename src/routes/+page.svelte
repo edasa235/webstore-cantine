@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { navigate } from '$app/navigation';
+
 
     let foodImage;
     let modalVisible = false;
@@ -14,10 +14,6 @@
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const currentDay = daysOfWeek[dayOfWeek];
 
-    function goToPage() {
-        // Navigate to a different page
-        navigate('/about');
-    }
 
     // Map food items to days of the week
     const foodItems = {
@@ -138,10 +134,6 @@
             <img src="src/assets/menu.png" alt="Shopping Cart" style="width: 100px; height: 100px;">
         </a>
     </button>
-    <!-- About Me Button -->
-    <button class="text-gray-700 hover:text-gray-900 focus:outline-none" on:click={goToPage}>
-        About Me
-    </button>
 
 </header>
     <!-- Modal --><!-- Login Modal -->
@@ -224,7 +216,7 @@
     {/if}
     <div class="bg-white rounded-lg overflow-hidden shadow-xl mb-8">
         <img src={foodImage} alt="Food Image" class="w-48 h-48" >
-        1*burger: 60.00 NOK
+        1 burger: 60.00 NOK
     </div>
 </div>
 <style>
