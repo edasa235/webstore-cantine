@@ -1,5 +1,6 @@
 <script>
     import { onMount } from 'svelte';
+    import { navigate } from '$app/navigation';
 
     let foodImage;
     let modalVisible = false;
@@ -13,12 +14,17 @@
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const currentDay = daysOfWeek[dayOfWeek];
 
+    function goToPage() {
+        // Navigate to a different page
+        navigate('/about');
+    }
+
     // Map food items to days of the week
     const foodItems = {
         Tuesday: 'burger',
         Wednesday: 'pizza',
         Thursday: 'pasta',
-        Friday: 'briyani',
+        Friday: 'butter-chicken',
     };
 
     async function fetchFoodImage(food) {
@@ -26,14 +32,20 @@
             const response = await fetch(`https://foodish-api.com/api/images/${food}`);
             const data = await response.json();
             foodImage = data.image;
+            localStorage.setItem(currentDay, foodImage); // Store image URL in local storage
         } catch (error) {
             console.error('Error fetching food image:', error);
         }
     }
 
     onMount(async () => {
-        const foodOfTheDay = foodItems[currentDay];
-        await fetchFoodImage(foodOfTheDay);
+        const storedImage = localStorage.getItem(currentDay); // Check if image is already stored for today
+        if (storedImage) {
+            foodImage = storedImage;
+        } else {
+            const foodOfTheDay = foodItems[currentDay];
+            await fetchFoodImage(foodOfTheDay);
+        }
     });
 
     function openModal(type) {
@@ -100,34 +112,38 @@
         closeModal();
     });
 </script>
+
 <div class="container mx-auto py-8">
-    <!-- Header -->
-    <header class="flex justify-between items-center mb-8">
-        <!-- Home button -->
-        <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
-            <img src="src/assets/file.png" alt="Home" style="width: 100px; height: 100px;">
-        </button>
-        <!-- Search button -->
-        <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center focus:outline-none">
-            <img src="src/assets/file (1).png" alt="Search" style="width: 100px; height: 100px;">
-        </button>
-        <!-- Profile picture -->
-        <button class="" on:click={() => openModal('login')}>
-            <img src="src/assets/file (3).png" class="w-10 h-10 rounded-full" style="width: 100px; height: 100px;">
-        </button>
-        <!-- Shopping cart -->
-        <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
-            <img src="src/assets/file (2).png" alt="Shopping Cart" style="width: 100px; height: 100px;">
-        </button>
+<!-- Header -->
+<header class="flex justify-between items-center mb-8">
+    <!-- Home button -->
+    <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+        <img src="src/assets/file.png" alt="Home" style="width: 100px; height: 100px;">
+    </button>
+    <!-- Search button -->
+    <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center focus:outline-none">
+        <img src="src/assets/file (1).png" alt="Search" style="width: 100px; height: 100px;">
+    </button>
+    <!-- Profile picture -->
+    <button class="" on:click={() => openModal('login')}>
+        <img src="src/assets/file (3).png" class="w-10 h-10 rounded-full" style="width: 100px; height: 100px;">
+    </button>
+    <!-- Shopping cart -->
+    <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+        <img src="src/assets/file (2).png" alt="Shopping Cart" style="width: 100px; height: 100px;">
+    </button>
+    <!-- menu -->
+    <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+        <a href="src/assets/menu.png" download>
+            <img src="src/assets/menu.png" alt="Shopping Cart" style="width: 100px; height: 100px;">
+        </a>
+    </button>
+    <!-- About Me Button -->
+    <button class="text-gray-700 hover:text-gray-900 focus:outline-none" on:click={goToPage}>
+        About Me
+    </button>
 
-        <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
-            <a href="src/assets/menu.jpeg" download>
-            <img src="src/assets/menu.jpeg" alt="Shopping Cart" style="width: 100px; height: 100px;">
-            </a>
-        </button>
-
-    </header>
-
+</header>
     <!-- Modal --><!-- Login Modal -->
 
     <!-- Login Modal -->
@@ -208,6 +224,7 @@
     {/if}
     <div class="bg-white rounded-lg overflow-hidden shadow-xl mb-8">
         <img src={foodImage} alt="Food Image" class="w-48 h-48" >
+        1*burger: 60.00 NOK
     </div>
 </div>
 <style>
