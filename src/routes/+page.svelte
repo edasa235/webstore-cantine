@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from 'svelte';
+    import {onMount} from 'svelte';
 
 
     let foodImage;
@@ -8,12 +8,13 @@
     let username = '';
     let password = '';
     let user_id = null; // Initialize user_id variable
+    let isAdmin = false; // Declare isAdmin variable and initialize it as false
+    let pinCode = ''; // Declare pinCode variable and initialize it as an empty string
 
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const currentDay = daysOfWeek[dayOfWeek];
-
 
     // Map food items to days of the week
     const foodItems = {
@@ -64,7 +65,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({username, password, isAdmin, pinCode}) // Include isAdmin and pinCode in the request body
             });
             const data = await response.json();
 
@@ -88,7 +89,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({username, password})
             });
             const data = await response.json();
 
@@ -110,32 +111,33 @@
 </script>
 
 <div class="container mx-auto py-8">
-<!-- Header -->
-<header class="flex justify-between items-center mb-8">
-    <!-- Home button -->
-    <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
-        <img src="src/assets/file.png" alt="Home" style="width: 100px; height: 100px;">
-    </button>
-    <!-- Search button -->
-    <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center focus:outline-none">
-        <img src="src/assets/file (1).png" alt="Search" style="width: 100px; height: 100px;">
-    </button>
-    <!-- Profile picture -->
-    <button class="" on:click={() => openModal('login')}>
-        <img src="src/assets/file (3).png" class="w-10 h-10 rounded-full" style="width: 100px; height: 100px;">
-    </button>
-    <!-- Shopping cart -->
-    <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
-        <img src="src/assets/file (2).png" alt="Shopping Cart" style="width: 100px; height: 100px;">
-    </button>
-    <!-- menu -->
-    <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
-        <a href="src/assets/menu.png" download>
-            <img src="src/assets/menu.png" alt="Shopping Cart" style="width: 100px; height: 100px;">
-        </a>
-    </button>
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-8">
+        <!-- Home button -->
+        <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+            <img src="src/assets/file.png" alt="Home" style="width: 100px; height: 100px;">
+        </button>
+        <!-- Search button -->
+        <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center focus:outline-none">
+            <img src="src/assets/file (1).png" alt="Search" style="width: 100px; height: 100px;">
+        </button>
+        <!-- Profile picture -->
+        <button class="" on:click={() => openModal('login')}>
+            <img src="src/assets/file (3).png" class="w-10 h-10 rounded-full" style="width: 100px; height: 100px;">
+        </button>
+        <!-- Shopping cart -->
+        <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+            <img src="src/assets/file (2).png" alt="Shopping Cart" style="width: 100px; height: 100px;">
+        </button>
+        <!-- menu -->
+        <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+            <a href="src/assets/menu.png" download>
+                <img src="src/assets/menu.png" alt="Shopping Cart" style="width: 100px; height: 100px;">
+            </a>
+        </button>
 
-</header>
+
+    </header>
     <!-- Modal --><!-- Login Modal -->
 
     <!-- Login Modal -->
@@ -153,20 +155,24 @@
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                                 Username
                             </label>
-                            <input type="text" id="username" placeholder="Username" bind:value={username} required class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <input type="text" id="username" placeholder="Username" bind:value={username} required
+                                   class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         </div>
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                                 Password
                             </label>
-                            <input type="password" id="password" placeholder="Password" bind:value={password} required class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
+                            <input type="password" id="password" placeholder="Password" bind:value={password} required
+                                   class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                         </div>
                         <div class="flex items-center justify-between mb-4">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Sign In
                             </button>
                             <!-- Button to toggle signup modal -->
-                            <button class="text-gray-700 hover:text-gray-900 focus:outline-none" on:click={() => openModal('signup')}>
+                            <button class="text-gray-700 hover:text-gray-900 focus:outline-none"
+                                    on:click={() => openModal('signup')}>
                                 Sign Up
                             </button>
                         </div>
@@ -182,6 +188,7 @@
         </div>
     {/if}
 
+    <!-- Signup Modal -->
     {#if modalVisible && modalType === 'signup'}
         <div class="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center">
             <!-- Modal content -->
@@ -196,16 +203,36 @@
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-username">
                                 Username
                             </label>
-                            <input type="text" id="signup-username" placeholder="Username" bind:value={username} required class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <input type="text" id="signup-username" placeholder="Username" bind:value={username}
+                                   required
+                                   class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         </div>
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-password">
                                 Password
                             </label>
-                            <input type="password" id="signup-password" placeholder="Password" bind:value={password} required class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
+                            <input type="password" id="signup-password" placeholder="Password" bind:value={password}
+                                   required
+                                   class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                         </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-admin">
+                                Sign up as Admin
+                            </label>
+                            <input type="checkbox" id="signup-admin" bind:checked={isAdmin} class="mr-2">
+                        </div>
+                        {#if isAdmin}
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-pincode">
+                                    Admin Pin Code
+                                </label>
+                                <input type="text" id="signup-pincode" placeholder="Admin Pin Code" bind:value={pinCode}
+                                       class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
+                            </div>
+                        {/if}
                         <div class="flex items-center justify-between mb-4">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Sign Up
                             </button>
                         </div>
@@ -214,11 +241,9 @@
             </div>
         </div>
     {/if}
+
     <div class="bg-white rounded-lg overflow-hidden shadow-xl mb-8">
-        <img src={foodImage} alt="Food Image" class="w-48 h-48" >
+        <img src={foodImage} alt="Food Image" class="w-48 h-48">
         1 burger: 60.00 NOK
     </div>
 </div>
-<style>
-    /* Additional styling can be added here */
-</style>
