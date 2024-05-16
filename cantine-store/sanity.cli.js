@@ -1,8 +1,9 @@
-import {defineCliConfig} from 'sanity/cli'
+import sanityClient from '@sanity/client';
 
-export default defineCliConfig({
-  api: {
-    projectId: 'wlk5vmg7',
-    dataset: 'production'
-  }
-})
+const client = sanityClient({
+  projectId: 'wlk5vmg7',
+  dataset: 'production',
+  useCdn: true, // Enable the Content Delivery Network (CDN) for faster responses
+});
+
+export default client;

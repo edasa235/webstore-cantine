@@ -1,15 +1,24 @@
 <script>
-    import {onMount} from 'svelte';
 
+    import { onMount } from 'svelte';
+    import { writable } from 'svelte/store';
+    import { fetchDishData } from '../../cantine-store/fetchdishdata';
 
+    const dishes = writable([]);
+
+    onMount(async () => {
+        const data = await fetchDishData();
+        dishes.set(data);
+    });
+
+    export let genuses = [];
     let foodImage;
     let modalVisible = false;
     let modalType = '';
     let username = '';
     let password = '';
     let user_id = null; // Initialize user_id variable
-    let isAdmin = false; // Declare isAdmin variable and initialize it as false
-    let pinCode = ''; // Declare pinCode variable and initialize it as an empty string
+  // Declare pinCode variable and initialize it as an empty string
 
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
@@ -65,7 +74,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({username, password, isAdmin, pinCode}) // Include isAdmin and pinCode in the request body
+                body: JSON.stringify({username, password}) // Include isAdmin and pinCode in the request body
             });
             const data = await response.json();
 
@@ -215,21 +224,6 @@
                                    required
                                    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-admin">
-                                Sign up as Admin
-                            </label>
-                            <input type="checkbox" id="signup-admin" bind:checked={isAdmin} class="mr-2">
-                        </div>
-                        {#if isAdmin}
-                            <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-pincode">
-                                    Admin Pin Code
-                                </label>
-                                <input type="text" id="signup-pincode" placeholder="Admin Pin Code" bind:value={pinCode}
-                                       class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
-                            </div>
-                        {/if}
                         <div class="flex items-center justify-between mb-4">
                             <button type="submit"
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -246,4 +240,8 @@
         <img src={foodImage} alt="Food Image" class="w-48 h-48">
         1 burger: 60.00 NOK
     </div>
+    {#each $dishes as dish}
+        <li>{dish.name}</li>
+        <li>{dish.image}</li>
+    {/each}
 </div>

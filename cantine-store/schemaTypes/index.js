@@ -1,1 +1,2 @@
-export const schemaTypes = []
+import menu from './menu'
+export const schemaTypes = [menu]
