@@ -2,24 +2,32 @@
     import { onMount } from 'svelte';
 
     let foodImage;
+    let foodOfTheDay = '';
     let modalVisible = false;
     let modalType = '';
     let username = '';
     let password = '';
     let user_id = null; // Initialize user_id variable
 
-    const currentDate = new Date();
-    const dayOfWeek = currentDate.getDay();
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const currentDay = daysOfWeek[dayOfWeek];
+    async function fetchFoodData() {
+        try {
+            const response = await fetch('https://yncu9xen.api.sanity.io/v1/data/query/production');
+            const data = await response.json();
+            return data; // Assuming data is an object with food information for each day
+        } catch (error) {
+            console.error('Error fetching food data:', error);
+        }
+    }
 
-    // Map food items to days of the week
-    const foodItems = {
-        Tuesday: 'burger',
-        Wednesday: 'pizza',
-        Thursday: 'pasta',
-        Friday: 'briyani',
-    };
+    onMount(async () => {
+        const foodData = await fetchFoodData();
+        const currentDate = new Date();
+        const dayOfWeek = currentDate.getDay();
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const currentDay = daysOfWeek[dayOfWeek];
+        foodOfTheDay = foodData[currentDay];
+        await fetchFoodImage(foodOfTheDay);
+    });
 
     async function fetchFoodImage(food) {
         try {
@@ -30,11 +38,6 @@
             console.error('Error fetching food image:', error);
         }
     }
-
-    onMount(async () => {
-        const foodOfTheDay = foodItems[currentDay];
-        await fetchFoodImage(foodOfTheDay);
-    });
 
     function openModal(type) {
         modalVisible = true;
@@ -100,6 +103,7 @@
         closeModal();
     });
 </script>
+
 <div class="container mx-auto py-8">
     <!-- Header -->
     <header class="flex justify-between items-center mb-8">
@@ -207,7 +211,8 @@
         </div>
     {/if}
     <div class="bg-white rounded-lg overflow-hidden shadow-xl mb-8">
-        <img src={foodImage} alt="Food Image" class="w-48 h-48" >
+        <img src={foodImage} alt="Food Image" class="w-48 h-48">
+        <h2>{foodOfTheDay}</h2> <!-- Display additional food information -->
     </div>
 </div>
 <style>
