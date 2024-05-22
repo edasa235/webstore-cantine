@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { navigate } from '$app/navigation';
+
 
     let foodImage;
     let modalVisible = false;
@@ -8,17 +8,31 @@
     let username = '';
     let password = '';
     let user_id = null; // Initialize user_id variable
-
+    let PROJECT_ID = "7mofbc3b"; // Your project ID from sanity.io/manage
+    let DATASET = "production";
+    let QUERY = encodeURIComponent('*[_type == "dish"]');
+    let URL = `https://7mofbc3b.api.sanity.io/v2021-10-21/data/query/production?query=*[_type == "dish"]`;
+    let list = [];
+    let dishes = [];
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const currentDay = daysOfWeek[dayOfWeek];
 
-    function goToPage() {
-        // Navigate to a different page
-        navigate('/about');
+    async function hentData() {
+        try {
+            let response = await fetch(URL);
+            let data = await response.json();
+
+            // Extract the result array from the response data
+            list = data.result;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     }
 
+    // Call the function to fetch data when the component mounts
+    onMount(hentData);
     // Map food items to days of the week
     const foodItems = {
         Tuesday: 'burger',
@@ -139,9 +153,6 @@
         </a>
     </button>
     <!-- About Me Button -->
-    <button class="text-gray-700 hover:text-gray-900 focus:outline-none" on:click={goToPage}>
-        About Me
-    </button>
 
 </header>
     <!-- Modal --><!-- Login Modal -->
@@ -222,9 +233,13 @@
             </div>
         </div>
     {/if}
-    <div class="bg-white rounded-lg overflow-hidden shadow-xl mb-8">
-        <img src={foodImage} alt="Food Image" class="w-48 h-48" >
-        1*burger: 60.00 NOK
+    <div id="dish">
+        {#each dishes as dish}
+            <div>
+                <h2>{dish.dish}</h2>
+                <img src={dish.dishImage} alt={dish.dish} />
+            </div>
+        {/each}
     </div>
 </div>
 <style>
