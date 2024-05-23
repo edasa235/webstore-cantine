@@ -7,33 +7,41 @@
     let modalType = '';
     let username = '';
     let password = '';
-    let user_id = null; // Initialize user_id variable
-    let PROJECT_ID = "7mofbc3b"; // Your project ID from sanity.io/manage
-    let DATASET = "production";
-    let QUERY = encodeURIComponent('*[_type == "dish"]');
-    let URL = `https://7mofbc3b.api.sanity.io/v2021-10-21/data/query/production?query=*[_type == "dish"]`;
-    let list = [];
-    let dishes = [];
+    let user_id = null;
+
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const currentDay = daysOfWeek[dayOfWeek];
 
-    async function hentData() {
-        try {
-            let response = await fetch(URL);
-            let data = await response.json();
+    let dishes = [];
 
-            // Extract the result array from the response data
-            list = data.result;
+    async function fetchDishes() {
+        try {
+            const response = await fetch('https://l5ivtwcx.api.sanity.io/v2021-10-21/data/query/production?query=*[_type%20==%20%22dish%22]');
+            const data = await response.json();
+            dishes = data.result;
+
+            // Log the URLs for debugging
+            dishes.forEach(dish => {
+                const imageUrl = formatImageUrl(dish.dishImage.asset._ref);
+                console.log(`Image URL for ${dish.dish}:`, imageUrl);
+            });
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching dishes:', error);
         }
     }
 
-    // Call the function to fetch data when the component mounts
-    onMount(hentData);
-    // Map food items to days of the week
+    function formatImageUrl(ref) {
+        const parts = ref.replace('image-', '').split('-');
+        const id = parts[0];
+        const dimensions = parts[1];
+        const format = parts[2];
+        return `https://cdn.sanity.io/images/l5ivtwcx/production/${id}-${dimensions}.${format}`;
+    }
+
+
+    onMount(fetchDishes);
     const foodItems = {
         Tuesday: 'burger',
         Wednesday: 'pizza',
@@ -46,14 +54,14 @@
             const response = await fetch(`https://foodish-api.com/api/images/${food}`);
             const data = await response.json();
             foodImage = data.image;
-            localStorage.setItem(currentDay, foodImage); // Store image URL in local storage
+            localStorage.setItem(currentDay, foodImage);
         } catch (error) {
             console.error('Error fetching food image:', error);
         }
     }
 
     onMount(async () => {
-        const storedImage = localStorage.getItem(currentDay); // Check if image is already stored for today
+        const storedImage = localStorage.getItem(currentDay);
         if (storedImage) {
             foodImage = storedImage;
         } else {
@@ -65,7 +73,6 @@
     function openModal(type) {
         modalVisible = true;
         modalType = type;
-        console.log('Opened modal:', type);
     }
 
     function closeModal() {
@@ -75,7 +82,6 @@
 
     async function handlesignup(event) {
         event.preventDefault();
-        console.log('Signup button clicked');
         try {
             const response = await fetch('http://localhost:5000/register', {
                 method: 'POST',
@@ -87,8 +93,7 @@
             const data = await response.json();
 
             if (response.ok) {
-                console.log('Registration successful');
-                openModal('login'); // Open the login modal after registration
+                openModal('login');
             } else {
                 console.error('Registration Error:', data.error);
             }
@@ -111,9 +116,8 @@
             const data = await response.json();
 
             if (response.ok) {
-                console.log('Login successful');
-                user_id = data.user_id; // Update user_id with the received value
-                closeModal(); // Close the modal
+                user_id = data.user_id;
+                closeModal();
             } else {
                 console.error('Login Error:', data.error);
             }
@@ -126,6 +130,7 @@
         closeModal();
     });
 </script>
+
 
 <div class="container mx-auto py-8">
 <!-- Header -->
@@ -233,15 +238,31 @@
             </div>
         </div>
     {/if}
-    <div id="dish">
-        {#each dishes as dish}
-            <div>
-                <h2>{dish.dish}</h2>
-                <img src={dish.dishImage} alt={dish.dish} />
-            </div>
-        {/each}
+    {#if foodImage}
+        <div class="flex flex-col items-center mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Dish of the Day: {currentDay}</h2>
+            <img src={foodImage} alt={currentDay} class="w-full max-w-md rounded-lg shadow-lg">
+        </div>
+    {/if}
+
+
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-semibold mb-4">Dishes</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {#each dishes as dish}
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src={formatImageUrl(dish.dishImage.asset._ref)} alt={dish.dish} class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold mb-2">{dish.dish}</h2>
+                    </div>
+                </div>
+            {/each}
+        </div>
     </div>
-</div>
+
+
+    </div>
+
 <style>
     /* Additional styling can be added here */
 </style>
