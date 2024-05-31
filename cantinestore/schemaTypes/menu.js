@@ -12,6 +12,12 @@ export default {
             title: 'dish image',
             name: "dishImage"
 
+        },
+        {
+            type: 'text',
+            title: 'description',
+            name: 'description',
         }
+
     ]
 }
