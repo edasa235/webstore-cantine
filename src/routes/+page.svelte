@@ -1,13 +1,13 @@
 <script>
     import { onMount } from 'svelte';
 
-    let foodImage;
     let modalVisible = false;
     let modalType = '';
     let username = '';
     let password = '';
     let user_id = null;
     let modalData = {};
+    let cart = [];
 
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
@@ -15,6 +15,13 @@
     const currentDay = daysOfWeek[dayOfWeek];
 
     let dishes = [];
+    let foodImage = '';
+    const foodItems = {
+        Tuesday: 'burger',
+        Wednesday: 'pizza',
+        Thursday: 'pasta',
+        Friday: 'butter-chicken',
+    };
 
     async function fetchDishes() {
         try {
@@ -40,34 +47,11 @@
         return `https://cdn.sanity.io/images/l5ivtwcx/production/${id}-${dimensions}.${format}`;
     }
 
-    onMount(fetchDishes);
-
-    const foodItems = {
-        Tuesday: 'burger',
-        Wednesday: 'pizza',
-        Thursday: 'pasta',
-        Friday: 'butter-chicken',
-    };
-
-    async function fetchFoodImage(food) {
-        try {
-            const response = await fetch(`https://foodish-api.com/api/images/${food}`);
-            const data = await response.json();
-            foodImage = data.image;
-            localStorage.setItem(currentDay, foodImage);
-        } catch (error) {
-            console.error('Error fetching food image:', error);
-        }
-    }
-
-    onMount(async () => {
-        const storedImage = localStorage.getItem(currentDay);
-        if (storedImage) {
-            foodImage = storedImage;
-        } else {
-            const foodOfTheDay = foodItems[currentDay];
-            await fetchFoodImage(foodOfTheDay);
-        }
+    onMount(() => {
+        fetchDishes();
+        const foodOfTheDay = foodItems[currentDay];
+        foodImage = `src/assets/${foodOfTheDay}.png`; // Assuming images are stored locally in the src/assets directory
+        closeModal();
     });
 
     function openModal(type, data) {
@@ -82,8 +66,18 @@
         modalData = {};
     }
 
-    async function handleSignup(event) {
+    function addToCart(dish) {
+        cart = [...cart, dish];
+        closeModal();
+    }
+
+    function removeFromCart(index) {
+        cart = cart.filter((_, i) => i !== index);
+    }
+
+    async function handlesignup(event) {
         event.preventDefault();
+        console.log('Signup button clicked');
         try {
             const response = await fetch('http://localhost:5000/register', {
                 method: 'POST',
@@ -95,7 +89,8 @@
             const data = await response.json();
 
             if (response.ok) {
-                openModal('login');
+                console.log('Registration successful');
+                openModal('login'); // Open the login modal after registration
             } else {
                 console.error('Registration Error:', data.error);
             }
@@ -106,6 +101,7 @@
 
     async function handleLogin(event) {
         event.preventDefault();
+
         try {
             const response = await fetch('http://localhost:5000/login', {
                 method: 'POST',
@@ -117,8 +113,9 @@
             const data = await response.json();
 
             if (response.ok) {
-                user_id = data.user_id;
-                closeModal();
+                console.log('Login successful');
+                user_id = data.user_id; // Update user_id with the received value
+                closeModal(); // Close the modal
             } else {
                 console.error('Login Error:', data.error);
             }
@@ -148,8 +145,9 @@
             <img src="src/assets/file (3).png" alt="Profile" class="w-12 h-12 rounded-full">
         </button>
         <!-- Shopping cart -->
-        <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+        <button class="text-gray-700 hover:text-gray-900 focus:outline-none" on:click={() => openModal('cart')}>
             <img src="src/assets/file (2).png" alt="Shopping Cart" class="w-12 h-12">
+            <h1>{cart}</h1>
         </button>
         <!-- Menu -->
         <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
@@ -219,7 +217,7 @@
                     <h3 class="text-lg leading-6 font-medium text-gray-900">Sign Up</h3>
                 </div>
                 <div class="border-t border-gray-200">
-                    <form class="px-4 py-5 sm:p-6" on:submit={handleSignup}>
+                    <form class="px-4 py-5 sm:p-6" on:submit={handlesignup()}>
                         <!-- Username -->
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-username">
@@ -243,14 +241,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-    {/if}
-
-    <!-- Food Image -->
-    {#if foodImage}
-        <div class="flex flex-col items-center mb-8">
-            <h2 class="text-3xl font-semibold mb-4">Dish of the Day: {currentDay}</h2>
-            <img src={foodImage} alt={currentDay} class="w-full max-w-md rounded-lg shadow-lg">
         </div>
     {/if}
 
@@ -281,6 +271,9 @@
                     <div>
                         <h3 class="text-lg leading-6 font-medium text-gray-900">{modalData.dish}</h3>
                         <p class="mt-2 text-sm text-gray-500">{modalData.description}</p>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" on:click={() => addToCart(modalData)}>
+                            Add to Cart
+                        </button>
                     </div>
                 </div>
                 <div class="border-t border-gray-200">
@@ -289,6 +282,37 @@
                             Close
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+    {/if}
+
+    <!-- Cart Modal -->
+    {#if modalVisible && modalType === 'cart'}
+        <div class="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            <div class="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                <div class="px-4 py-5 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Shopping Cart</h3>
+                </div>
+                <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                    {#if cart.length === 0}
+                        <p>Your cart is empty</p>
+                    {:else}
+                        <ul>
+                            {#each cart as item, index}
+                                <li class="flex justify-between mb-2">
+                                    <span>{item.dish}</span>
+                                    <button class="text-red-500 hover:text-red-700 focus:outline-none" on:click={() => removeFromCart(index)}>Remove</button>
+                                </li>
+                            {/each}
+                        </ul>
+                    {/if}
+                </div>
+                <div class="border-t border-gray-200 px-4 py-3 sm:px-6 flex justify-end">
+                    <button type="button" class="text-blue-500 hover:text-blue-700 focus:outline-none" on:click={closeModal}>
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
