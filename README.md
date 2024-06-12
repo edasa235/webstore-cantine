@@ -1,38 +1,92 @@
-# create-svelte
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+```markdown
+# Cantine Website
+en kantine website laget med sveltekit, express og sanity cms
 
-## Creating a project
+## Innholdsfortegnelse
 
-If you're seeing this, you've probably already done this step. Congrats!
+- [Cantine Website](#cantine-website)
+  - [Innholdsfortegnelse](#innholdsfortegnelse)
+  - [Installasjon](#installasjon)
+  - [Bruk](#bruk)
+  - [Funksjoner](#funksjoner)
+  - [Bidra](#bidra)
+  - [Lisens](#lisens)
+  - [Kontakt](#kontakt)
+  - [Takk](#takk)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Installasjon
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+Følg disse stegene for å sette opp prosjektet lokalt.
 
-## Developing
+1. **Klon repository**
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+    ```sh
+    git clone https://github.com/your_username/cantine-website.git
+    ```
 
-```bash
+2. **Naviger til prosjektkatalogen**
+
+    ```sh
+    cd cantine-website
+    ```
+
+3. **Installer avhengigheter**
+
+    ```sh
+    npm install
+    ```
+
+4. **Start utviklingsserveren**
+
+    ```sh
+    npm run dev
+    ```
+
+## Bruk
+
+### Kjøre i utviklingsmodus
+
+Start SvelteKit utviklingsserveren:
+
+```sh
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+Naviger til `http://localhost:3000` for å se nettsiden.
 
-To create a production version of your app:
+### Bygge for produksjon
 
-```bash
+For å lage en optimalisert bygging av prosjektet:
+
+```sh
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
+Server produksjonsbygget lokalt for å sikre at alt fungerer:
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+```sh
+npm run preview
+```
+
+## Funksjoner
+
+- **Daglig Meny**: se daglig varer
+- **Pris og Bestilling**: informasjon om priser og kan bestille mat fra den
+- **Brukerautentisering**: sikker innlogging og brukerhåndtering
+- **Admin Dashboard**: kantinepersonalet kan redigere og legge til matvarer
+
+## Lisens
+
+Dette prosjektet er lisensiert under MIT-lisensen.
+
+## Kontakt
+
+For spørsmål eller støtte, vennligst ta kontakt:
+
+Ditt Navn - [edvardaslaksen130206@gmail.com](mailto:edvardaslaksen130206@gmail.com)
+
+Prosjektlink: [https://github.com/edasa235/webstore-cantine](https://github.com/edasa235/webstore-cantine)
+```
+
+Let me know if there is anything else you need!
