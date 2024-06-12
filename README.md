@@ -1,4 +1,3 @@
-Sure, here is the translation of the English parts to Norwegian:
 
 ```markdown
 # Cantine Website
