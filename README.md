@@ -1,169 +1,93 @@
-Certainly! Here's a tailored README template for a SvelteKit-based cantine (cafeteria) website:
+Sure, here is the translation of the English parts to Norwegian:
 
 ```markdown
 # Cantine Website
+en kantine website laget med sveltekit, express og sanity cms
 
-![Cantine Logo](link_to_logo_image)
-
-A modern, responsive website for managing and viewing cantine menus, specials, and events built with SvelteKit.
-
-## Table of Contents
+## Innholdsfortegnelse
 
 - [Cantine Website](#cantine-website)
-  - [Table of Contents](#table-of-contents)
-  - [Installation](#installation)
-  - [Usage](#usage)
-  - [Features](#features)
-  - [Configuration](#configuration)
-  - [Contributing](#contributing)
-  - [License](#license)
-  - [Contact](#contact)
-  - [Acknowledgements](#acknowledgements)
+  - [Innholdsfortegnelse](#innholdsfortegnelse)
+  - [Installasjon](#installasjon)
+  - [Bruk](#bruk)
+  - [Funksjoner](#funksjoner)
+  - [Bidra](#bidra)
+  - [Lisens](#lisens)
+  - [Kontakt](#kontakt)
+  - [Takk](#takk)
 
-## Installation
+## Installasjon
 
-Follow these steps to set up the project locally.
+Følg disse stegene for å sette opp prosjektet lokalt.
 
-1. **Clone the repository**
+1. **Klon repository**
 
     ```sh
     git clone https://github.com/your_username/cantine-website.git
     ```
 
-2. **Navigate to the project directory**
+2. **Naviger til prosjektkatalogen**
 
     ```sh
     cd cantine-website
     ```
 
-3. **Install dependencies**
+3. **Installer avhengigheter**
 
     ```sh
     npm install
     ```
 
-4. **Start the development server**
+4. **Start utviklingsserveren**
 
     ```sh
     npm run dev
     ```
 
-## Usage
+## Bruk
 
-### Running in Development
+### Kjøre i utviklingsmodus
 
-Start the SvelteKit development server:
+Start SvelteKit utviklingsserveren:
 
 ```sh
 npm run dev
 ```
 
-Navigate to `http://localhost:3000` to view the website.
+Naviger til `http://localhost:3000` for å se nettsiden.
 
-### Building for Production
+### Bygge for produksjon
 
-To create an optimized build of the project:
+For å lage en optimalisert bygging av prosjektet:
 
 ```sh
 npm run build
 ```
 
-Serve the production build locally to ensure everything works:
+Server produksjonsbygget lokalt for å sikre at alt fungerer:
 
 ```sh
 npm run preview
 ```
 
-## Features
+## Funksjoner
 
-- **Daily Menu**: View daily specials and regular menu items.
-- **Event Management**: Information on upcoming events.
-- **Responsive Design**: Mobile-first approach ensuring compatibility with all devices.
-- **User Authentication**: Secure login and user management.
-- **Admin Dashboard**: Manage menu items and events easily.
+- **Daglig Meny**: se daglig varer
+- **Pris og Bestilling**: informasjon om priser og kan bestille mat fra den
+- **Brukerautentisering**: sikker innlogging og brukerhåndtering
+- **Admin Dashboard**: kantinepersonalet kan redigere og legge til matvarer
 
-## Configuration
+## Lisens
 
-Adjust the configuration settings as needed.
+Dette prosjektet er lisensiert under MIT-lisensen.
 
-### Environment Variables
+## Kontakt
 
-Create a `.env` file in the root of the project and add your environment variables:
+For spørsmål eller støtte, vennligst ta kontakt:
 
-```env
-VITE_API_URL=https://api.example.com
-VITE_AUTH_SECRET=your_auth_secret
+Ditt Navn - [edvardaslaksen130206@gmail.com](mailto:edvardaslaksen130206@gmail.com)
+
+Prosjektlink: [https://github.com/edasa235/webstore-cantine](https://github.com/edasa235/webstore-cantine)
 ```
 
-### Configuration File
-
-Adjust the `config.js` file for any additional settings:
-
-```javascript
-export const config = {
-  apiUrl: process.env.VITE_API_URL,
-  authSecret: process.env.VITE_AUTH_SECRET
-};
-```
-
-## Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. **Fork the repository**
-
-2. **Create a new branch**
-
-    ```sh
-    git checkout -b feature/your-feature
-    ```
-
-3. **Make your changes**
-
-4. **Commit your changes**
-
-    ```sh
-    git commit -m 'Add some feature'
-    ```
-
-5. **Push to the branch**
-
-    ```sh
-    git push origin feature/your-feature
-    ```
-
-6. **Create a new Pull Request**
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For questions or support, please reach out:
-
-Your Name - [your_email@example.com](mailto:your_email@example.com)
-
-Project Link: [https://github.com/your_username/cantine-website](https://github.com/your_username/cantine-website)
-
-## Acknowledgements
-
-- Special thanks to the SvelteKit team for their amazing framework.
-- Thanks to [OpenAI](https://www.openai.com) for their assistance in generating this README template.
-- Inspiration from various cantine and cafeteria websites.
-```
-
-### Explanation of Sections:
-
-1. **Project Name**: The name and purpose of your cantine website.
-2. **Table of Contents**: A list of sections for easy navigation.
-3. **Installation**: Steps to set up the project on a local machine.
-4. **Usage**: Instructions for running the project in development and building for production.
-5. **Features**: A list of key features your cantine website offers.
-6. **Configuration**: Information on how to configure the project, including environment variables.
-7. **Contributing**: Guidelines for contributing to the project.
-8. **License**: The licensing information for your project.
-9. **Contact**: How users can reach you for questions or support.
-10. **Acknowledgements**: A section to thank those who contributed or inspired the project.
-
-Feel free to modify this template to better fit your specific project requirements.
+Let me know if there is anything else you need!
