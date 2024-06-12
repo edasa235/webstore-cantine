@@ -28,6 +28,7 @@ app.post('/register', async (req, res) => {
         res.status(500).json({ error: 'Registration failed' });
     }
 });
+
 app.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -35,7 +36,6 @@ app.post('/login', async (req, res) => {
         if (result.rows.length > 0) {
             const user = result.rows[0];
             if (await bcrypt.compare(password, user.password)) {
-                // Return the user ID upon successful login
                 res.status(200).json({ user_id: user.user_id });
             } else {
                 res.status(401).json({ error: 'Login failed' });
@@ -49,7 +49,22 @@ app.post('/login', async (req, res) => {
     }
 });
 
-
+// New endpoint to handle purchase
+app.post('/purchase', async (req, res) => {
+    try {
+        const { user_id, cart, cardNumber, expiryDate, cvv } = req.body;
+        // Ensure you have a table in your database to store these details
+        const result = await pool.query(
+          'INSERT INTO purchases (user_id, cart, cardNumber, expiryDate, cvv) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+          [user_id, JSON.stringify(cart), cardNumber, expiryDate, cvv]
+        );
+        res.status(200).json(result.rows[0]);
+    } catch (error) {
+        console.error('Purchase Error:', error);
+        res.status(500).json({ error: 'Purchase failed' });
+    }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+

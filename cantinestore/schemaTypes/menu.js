@@ -17,6 +17,11 @@ export default {
             type: 'text',
             title: 'description',
             name: 'description',
+        },
+        {
+            type: 'text',
+            title: 'price',
+            name: 'price',
         }
 
     ]
