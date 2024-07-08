@@ -1,92 +1,89 @@
-
 ```markdown
 # Cantine Website
-en kantine website laget med sveltekit, express og sanity cms
+a canteen website made with SvelteKit, Express, and Sanity CMS
 
-## Innholdsfortegnelse
+## Table of Contents
 
 - [Cantine Website](#cantine-website)
-  - [Innholdsfortegnelse](#innholdsfortegnelse)
-  - [Installasjon](#installasjon)
-  - [Bruk](#bruk)
-  - [Funksjoner](#funksjoner)
-  - [Bidra](#bidra)
-  - [Lisens](#lisens)
-  - [Kontakt](#kontakt)
-  - [Takk](#takk)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Features](#features)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Contact](#contact)
+  - [Acknowledgements](#acknowledgements)
 
-## Installasjon
+## Installation
 
-Følg disse stegene for å sette opp prosjektet lokalt.
+Follow these steps to set up the project locally.
 
-1. **Klon repository**
+1. **Clone the repository**
 
     ```sh
     git clone https://github.com/your_username/cantine-website.git
     ```
 
-2. **Naviger til prosjektkatalogen**
+2. **Navigate to the project directory**
 
     ```sh
     cd cantine-website
     ```
 
-3. **Installer avhengigheter**
+3. **Install dependencies**
 
     ```sh
     npm install
     ```
 
-4. **Start utviklingsserveren**
+4. **Start the development server**
 
     ```sh
     npm run dev
     ```
 
-## Bruk
+## Usage
 
-### Kjøre i utviklingsmodus
+### Running in Development Mode
 
-Start SvelteKit utviklingsserveren:
+Start the SvelteKit development server:
 
 ```sh
 npm run dev
 ```
 
-Naviger til `http://localhost:3000` for å se nettsiden.
+Navigate to `http://localhost:3000` to view the website.
 
-### Bygge for produksjon
+### Building for Production
 
-For å lage en optimalisert bygging av prosjektet:
+To create an optimized build of the project:
 
 ```sh
 npm run build
 ```
 
-Server produksjonsbygget lokalt for å sikre at alt fungerer:
+Serve the production build locally to ensure everything works:
 
 ```sh
 npm run preview
 ```
 
-## Funksjoner
+## Features
 
-- **Daglig Meny**: se daglig varer
-- **Pris og Bestilling**: informasjon om priser og kan bestille mat fra den
-- **Brukerautentisering**: sikker innlogging og brukerhåndtering
-- **Admin Dashboard**: kantinepersonalet kan redigere og legge til matvarer
+- **Daily Menu**: view daily items
+- **Pricing and Ordering**: information on prices and the ability to order food
+- **User Authentication**: secure login and user management
+- **Admin Dashboard**: canteen staff can edit and add food items
 
-## Lisens
+## License
 
-Dette prosjektet er lisensiert under MIT-lisensen.
+This project is licensed under the MIT license.
 
-## Kontakt
+## Contact
 
-For spørsmål eller støtte, vennligst ta kontakt:
+For questions or support, please contact:
 
-Ditt Navn - [edvardaslaksen130206@gmail.com](mailto:edvardaslaksen130206@gmail.com)
+Your Name - [edvardaslaksen130206@gmail.com](mailto:edvardaslaksen130206@gmail.com)
 
-Prosjektlink: [https://github.com/edasa235/webstore-cantine](https://github.com/edasa235/webstore-cantine)
+Project link: [https://github.com/edasa235/webstore-cantine](https://github.com/edasa235/webstore-cantine)
 ```
-
-Let me know if there is anything else you need!
